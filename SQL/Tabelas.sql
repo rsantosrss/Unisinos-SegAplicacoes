@@ -1,0 +1,11 @@
+
+CREATE DATABASE UNISINOS;
+
+CREATE TABLE Produtos (
+	CodProduto 	INT(5) 			NOT NULL 	AUTO_INCREMENT,
+	NmProduto  	VARCHAR(50) 	NOT NULL,
+	DscProduto  VARCHAR(255) 	NOT NULL,
+	VlrProduto  DOUBLE 			NOT NULL,
+	QtdProduto 	INT(5) 			NOT NULL,
+	PRIMARY KEY (CodProduto)
+);
