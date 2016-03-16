@@ -11,9 +11,6 @@ try{
 }catch (Exception $e){
     echo $e->getMessage();
 }
-
-
-
 ?>
 <!doctype html>
 <html>
