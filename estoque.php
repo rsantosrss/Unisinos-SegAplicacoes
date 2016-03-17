@@ -5,6 +5,11 @@ include_once "./includes/connection.php";
 
 session_start();
 
+if(!$_SESSION["Apelido"]){
+    header("location: index.php");
+    return;
+}
+
 if(strtoupper($_SESSION["Apelido"]) != "ADMIN"){
     header("location: carrinho.php");
 }
@@ -33,7 +38,9 @@ if(strtoupper($_SESSION["Apelido"]) != "ADMIN"){
         <li>&nbsp;&nbsp;|</li>
         <li><a href='comprar.php'>&nbsp;&nbsp;Comprar</a></li>
         <li>&nbsp;&nbsp;|</li>
-        <li><a href='carrinho.php'>&nbsp;&nbsp;Meu Carrinho</a></li>         
+        <li><a href='Usuarios.php'>&nbsp;&nbsp;Usuários</a></li>         
+        <li>&nbsp;&nbsp;|</li>
+        <li><a href='carrinho.php'>&nbsp;&nbsp;Meu Carrinho</a></li>        
     </ul>
 </nav>
 <h1>E-Commerce Maneiro...</h1>

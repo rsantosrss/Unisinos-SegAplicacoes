@@ -1,16 +1,20 @@
 ﻿<?php
 error_reporting(0);
+session_start();
 include_once "./includes/connection.php";
 
 try{
-
-	$_SESSION["MsgErro"] = "";
     
+    $_SESSION["Apelido"] = "";
+	$_SESSION["MsgErro"] = "";	
+	
 	if(count($_REQUEST)){
-        
-        session_destroy();
-        
-        session_start();
+	    
+	    session_destroy();
+	    
+	    session_unset();
+	    
+	    session_start();
         
         $apelido = $_REQUEST["Apelido"];
         $senha = $_REQUEST["Senha"];
@@ -34,7 +38,8 @@ try{
             
             mysql_close();
             // Redirecionara para a página do carrinho.
-            header("location: carrinho.php"); 
+            header("location: carrinho.php");
+            return true;
         }
         else{
             $_SESSION["MsgErro"] = "Não foi encontrado algum usuário com apelido de ( ".strtoupper($apelido)." )";
@@ -42,7 +47,6 @@ try{
         
         mysql_close();
     }
-        
     
 }catch (Exception $e){
     echo $e->getMessage();

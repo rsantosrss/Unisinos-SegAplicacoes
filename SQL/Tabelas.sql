@@ -14,7 +14,7 @@ CREATE TABLE Usuarios(
 	CodUsuario	INT(5)			NOT NULL	AUTO_INCREMENT,
 	NmUsuario	VARCHAR(50)		NOT NULL,
 	DtNascimento DATE			NULL,
-	Cpf			INT(11)			NOT NULL,
+	Cpf			INT(15)			NOT NULL,
 	Endereco	VARCHAR(50)		NULL,
 	Cidade		VARCHAR(40)		NULL,
 	Estado		CHAR(2)			NULL,

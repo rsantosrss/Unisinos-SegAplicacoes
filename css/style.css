@@ -171,6 +171,10 @@ h1 {
 	text-align: left;
 }
 
+.hover:hover{
+	background-color: #CCC;
+}
+
 #nav {
 	background-color: #282828;
 	text-align: center;
