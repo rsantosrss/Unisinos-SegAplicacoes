@@ -34,19 +34,7 @@ try{
 	});
 </script>
 <body>
-<nav id="nav">
-	<ul>
-       <li><a href='estoque.php'>Estoque</a></li>
-        <li>&nbsp;&nbsp;|</li>
-        <li><a href='cadastro.php'>&nbsp;&nbsp;Cadastro Usuários</a></li>
-        <li>&nbsp;&nbsp;|</li>
-        <li><a href='comprar.php'>&nbsp;&nbsp;Comprar</a></li>
-        <li>&nbsp;&nbsp;|</li>
-        <li><a href='Usuarios.php'>&nbsp;&nbsp;Usuários</a></li>         
-        <li>&nbsp;&nbsp;|</li>
-        <li><a href='carrinho.php'>&nbsp;&nbsp;Meu Carrinho</a></li>     
-    </ul>
-</nav>
+<?php include './includes/menu.php';?>
 <h1>E-Commerce Maneiro...</h1>
 <div id ="wrapper">
     <table id="keywords">
