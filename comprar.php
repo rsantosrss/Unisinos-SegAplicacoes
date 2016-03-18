@@ -13,13 +13,11 @@ try{
 
     $Sql = "SELECT * FROM Produtos";
     
-    $con = mysql_query($Sql)or die(mysql_error());
+    $query = mysql_query($Sql)or die(mysql_error());
     
 }catch (Exception $e){
     echo $e->getMessage();
 }
-
-
 
 ?>
 <!doctype html>
@@ -43,27 +41,26 @@ try{
     <table id="keywords">
       <thead>
         <tr align="center">
-          <th><span>MATRICULA</span></th>
-          <th><span>NOME</span></th>
-          <th><span>REPAROS</span></th>
-          <th><span>REPETIDOS</span></th>
-          <th nowrap><span>% REP</span></th>
-          <th><span>OS's</span></th>
-          <th><span>IDEF</span></th>
-          <th nowrap><span>% IDEF</span></th>
+          <th><span>Produto</span></th>
+          <th><span>Valor unitário</span></th>
+          <th><span>Quantidades disponíveis</span></th>
+          <th><span>Descrição</span></th>
+          <th><span>Unidades</span></th>
+          <th><input type="submit" value="Adicionar ao carrinho"/></th>        
         </tr>
       </thead>
       <tbody>
-        <tr align="center" class="lalign">
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>        
+         <?php while($row = mysql_fetch_assoc($query)){?>
+        
+        <tr align="center" class="lalign hover">
+          <td><?php echo $row["NmProduto"]?></td>
+          <td>R$ <?php echo $row["VlrProduto"]?></td>
+          <td><?php echo $row["QtdProduto"]?> un.</td>
+          <td><?php echo $row["DscProduto"]?></td>
+          <td><input type="text" name="qtdProduto[<?php echo $row['CodProduto']?>]" size="1"; /></td>
+          <td>&nbsp;</td>
+        </tr>  
+        <?php }?>
       </tbody>
     </table>
 </div>
