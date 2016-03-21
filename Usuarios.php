@@ -16,17 +16,6 @@ if(strtoupper($_SESSION["Apelido"]) != "ADMIN"){
 
 $_SESSION["Msg"] = "";
 
-if ($_REQUEST["acao"] == "excluir") {
-
-    $sql = "DELETE FROM Usuarios";
-    $sql .= " WHERE CodUsuario = '" . $_REQUEST["CodUsuario"] . "'";
-
-    $query = mysql_query($sql) or die(mysql_error());
-
-    $_SESSION["Msg"] = "Usuario excluído com sucesso!";
-    
-}
-
 try{
     
     $sql = "SELECT * FROM Usuarios";   
@@ -51,6 +40,26 @@ try{
 	$(function(){
 	  $('#keywords').tablesorter(); 
 	});
+	
+	$(document).ready(function(){
+		
+		$(".delUser").on("click", function(){
+			var codUser = this.id;
+			$.ajax({
+				method: "POST",
+				url: "function.php",
+				data: { 
+						acao : "delUser",
+						CodUsuario : this.id						
+					}
+			}).done(function( msg ) {
+				alert(msg);
+				$("#user_" + codUser).remove();
+			  });
+		});
+	});
+	
+	
 </script>
 <body>
 <?php include './includes/menu.php';?>
@@ -74,7 +83,7 @@ try{
       
       <?php while($row = mysql_fetch_assoc($query)){?>
         
-        <tr align="center" class="lalign hover">
+        <tr align="center" class="lalign hover" id="user_<?php echo $row["CodUsuario"]?>">
           <td><?php echo $row["NmUsuario"]?></td>
           <td><?php echo $row["Cpf"]?></td>
           <td><?php echo $row["Endereco"]?></td>
@@ -86,7 +95,7 @@ try{
           <td>
             <a href="cadastro.php?acao=editar&CodUsuario=<?php echo $row["CodUsuario"]?>">Editar</a>
             &nbsp;&nbsp;|
-            <a href="Usuarios.php?acao=excluir&CodUsuario=<?php echo $row["CodUsuario"]?>">Excluir</a>
+            <a id="<?php echo $row["CodUsuario"]?>" class='delUser'>Excluir</a>
           </td>
         </tr>       
         

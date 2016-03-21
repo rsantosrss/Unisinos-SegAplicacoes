@@ -15,9 +15,6 @@ try{
     if(strtoupper($_SESSION["Apelido"]) != "ADMIN"){
         header("location: carrinho.php");
     }
-    
-    $_SESSION["Msg"] = "";
-    
     if ($_REQUEST["acao"] == "excluir") {
     
         $sql = "DELETE FROM Produtos";
@@ -83,9 +80,6 @@ try{
         </tr>       
         
         <?php }?> 
-        <tr>
-			<td colspan="10"><?php echo $_SESSION["Msg"]?></td>
-		</tr>
       </tbody>
     </table>
 </div>

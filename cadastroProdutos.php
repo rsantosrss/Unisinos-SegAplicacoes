@@ -13,11 +13,7 @@ if (strtoupper($_SESSION["Apelido"]) != "ADMIN") {
     header("location: carrinho.php");
 }
 
-$_SESSION["Msg"] = "";
-
-$valueBtnSubmit = "Cadastrar";
-
-if ($_REQUEST["BtnSubmit"] == 'Editar') {
+/*if ($_REQUEST["BtnSubmit"] == 'Editar') {
     
     $sql = "UPDATE Produtos SET ";
     $sql .= "NmProduto ='" . $_REQUEST["NmProduto"] . "',";
@@ -29,57 +25,10 @@ if ($_REQUEST["BtnSubmit"] == 'Editar') {
     $query = mysql_query($sql) or die(mysql_error());
     
     $_SESSION["Msg"] = "Produto " . $_REQUEST["NmProduto"] . " editado com sucesso";
-} 
+}*/
 
-elseif ($_REQUEST["BtnSubmit"] == "Cadastrar") {
-    
-    $sql = "SELECT *";
-    $sql .= " FROM Produtos";
-    $sql .= " WHERE NmProduto = '" . $_REQUEST["NmProduto"] . "'";
-    
-    $query = mysql_query($sql) or die(mysql_error());
-    
-    $row = mysql_fetch_assoc($query);
-    
-    // Se há registros, alimenta a global SESSION
-    if (mysql_affected_rows()) {
-        
-        $_SESSION["Msg"] = "Já existe algum produto com este mesmo nome.";
-        
-        mysql_close();
-    } else {
-        
-        $sql = "INSERT INTO Produtos (NmProduto, VlrProduto, QtdProduto, DscProduto)";
-        $sql .= " VALUES(";
-        $sql .= "'" . $_REQUEST["NmProduto"] . "',";
-        $sql .= "'" . $_REQUEST["VlrProduto"] . "',";
-        $sql .= "'" . $_REQUEST["QtdProduto"] . "',";
-        $sql .= "'" . $_REQUEST["DscProduto"] . "'";
-        $sql .= ")";
-        
-        if (mysql_query($sql)) {
-            $_SESSION["Msg"] = "Produto cadastrado com sucesso!";
-        } else {
-            die(mysql_error());
-        }
-    }
-    
-    mysql_close();
-    
-} elseif ($_REQUEST["acao"] == "editar") {
-    
-    $sql = "SELECT *";
-    $sql .= " FROM Produtos";
-    $sql .= " WHERE CodProduto = '" . $_REQUEST["CodProduto"] . "'";
-    
-    $query = mysql_query($sql) or die(mysql_error());
-    
-    $row = mysql_fetch_assoc($query);
-    
-    mysql_close();
+$valueBtnSubmit = "Cadastrar";
 
-    $valueBtnSubmit = "Editar";
-}
 ?>
 <!doctype html>
 <html>
@@ -93,6 +42,42 @@ elseif ($_REQUEST["BtnSubmit"] == "Cadastrar") {
 <script type="text/javascript">	
 $(function(){
 	  $('#keywords').tablesorter(); 
+	});
+	
+	
+	$(document).ready(function(){
+		
+		$("#BtnSubmit").on("click", function(){
+			
+			$.ajax({
+				method: "POST",
+				url: "function.php",
+				data: { 
+						acao : $("#action").val(),
+						NmProduto : $("#NmProduto").val(),
+						VlrProduto : $("#VlrProduto").val(),
+						DscProduto : $("#DscProduto").val(),
+						QtdProduto : $("#QtdProduto").val(),
+						CodProduto : $("#CodProduto").val()
+					}
+			}).done(function( vlrRetorno ) {
+				
+				if(vlrRetorno > 0){
+					
+					$("#action").val("updateProduto");
+					
+					if(!$("#CodProduto").val()){
+						alert("Produto Cadastrado com sucesso");
+						$("#CodProduto").val(vlrRetorno);
+					}else{
+						alert("Produto atualizado com sucesso");
+					}
+				}else{
+					alert(vlrRetorno);
+				}			
+								
+			  });			
+		});
 	});
 </script>
 <style>
@@ -114,10 +99,10 @@ select,input[type=text],input[type=email] {
 	<?php include './includes/menu.php';?>
 	<h1>E-Commerce Maneiro...</h1>
 	<div id="wrapper">
-		<form action="<?php $_SERVER["PHP_SELF"]?>" method="POST">
+		<form action="<?php $_SERVER["PHP_SELF"]?>" method="POST" id="formCadastro">
 			<input type="hidden" name="CodProduto" id="CodProduto"
 				value="<?php echo $row["CodProduto"];?>" /> <input type="hidden"
-				name="action" id="action" value="<?php echo $_REQUEST["acao"];?>" />
+				name="action" id="action" value="addProduto" />
 			<table id="keywords">
 				<tr align="left">
 					<td nowrap>Nome produto:</td>
@@ -136,10 +121,10 @@ select,input[type=text],input[type=email] {
 				</tr>
 				<tr align="left">
 					<td nowrap>Descrição:</td>
-					<td><textarea rows="3" cols="28" name="DscProduto"><?php echo $row["DscProduto"]?></textarea></td>
+					<td><textarea rows="3" cols="28" id="DscProduto" name="DscProduto"><?php echo $row["DscProduto"]?></textarea></td>
 				</tr>
 				<tr align="left">
-					<td colspan="2"><input type="submit" name="BtnSubmit"
+					<td colspan="2"><input type="button" name="BtnSubmit" id="BtnSubmit"
 						value="<?php echo $valueBtnSubmit?>" /></td>
 				</tr>
 				<tr>
