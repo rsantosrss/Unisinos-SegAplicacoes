@@ -11,9 +11,13 @@ if(!$_SESSION["Apelido"]){
 
 try{
 
-    $Sql = "SELECT * FROM Produtos";
+    $sql  = "SELECT Produtos.NmProduto,Produtos.VlrProduto,ItensCarrinho.QtdProdutos FROM ItensCarrinho";
+	$sql .= " INNER JOIN Carrinho ON(ItensCarrinho.CodCarrinho = Carrinho.CodCarrinho)";
+	$sql .= " INNER JOIN Produtos ON (ItensCarrinho.CodProduto = Produtos.CodProduto)";
+	$sql .= " WHERE Carrinho.IdSessao = '" . $_SESSION["IdSessao"] . "'";
+	$sql .= " AND CompraFinalizada IS NULL";
     
-    $con = mysql_query($Sql)or die(mysql_error());
+    $query = mysql_query($sql)or die(mysql_error());
     
 }catch (Exception $e){
     echo $e->getMessage();
@@ -29,9 +33,37 @@ try{
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://tablesorter.com/__jquery.tablesorter.min.js"></script>
 <script type="text/javascript">
+	
 	$(function(){
 	  $('#keywords').tablesorter(); 
+	});		
+	
+	$(document).ready(function(){
+		
+		$("#finalizaCompra, #cancelarCompra").on("click", function(){
+			
+			$.ajax({
+				method: "POST",
+				url: "function.php",
+				data: { 
+						acao : $(this).attr('id')						
+					}
+			}).done(function( vlrRetorno ) {
+				
+				if(vlrRetorno){
+					alert(vlrRetorno);
+					
+					window.location.href = 'comprar.php';
+					
+				}else{
+					alert(vlrRetorno);
+				}			
+								
+			  });	
+		});		
 	});
+	
+	
 </script>
 <body>
 <?php include './includes/menu.php';?>
@@ -40,27 +72,27 @@ try{
     <table id="keywords">
       <thead>
         <tr align="center">
-          <th><span>MATRICULA</span></th>
-          <th><span>NOME</span></th>
-          <th><span>REPAROS</span></th>
-          <th><span>REPETIDOS</span></th>
-          <th nowrap><span>% REP</span></th>
-          <th><span>OS's</span></th>
-          <th><span>IDEF</span></th>
-          <th nowrap><span>% IDEF</span></th>
+			<th><span>Produto</span></th>
+			<th><span>Valor unitário</span></th>
+			<th><span>Quantidade</span></th>
+			<th><span>Valor total</span></th>
+			<?php if(mysql_num_rows($query)){ ?>
+			<th><input type="button" name='finalizaCompra'  id='finalizaCompra' value="Finaliza compra" /></th>
+			<th><input type="button" name='cancelarCompra' id='cancelarCompra'  value="Cancelar compra" /></th>		
+			<?php } ?>			
         </tr>
       </thead>
       <tbody>
-        <tr align="center" class="lalign">
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>        
+        <?php while($row = mysql_fetch_assoc($query)){?>
+        
+			<tr align="center" class="lalign hover">
+			  <td><?php echo $row["NmProduto"]?></td>
+			  <td>R$ <?php echo $row["VlrProduto"]?></td>
+			  <td><?php echo $row["QtdProdutos"]?></td>
+			  <td>R$ <?php echo number_format(($row["VlrProduto"] * $row["QtdProdutos"]),2,',','.')?></td>                              
+			</tr>       
+       
+        <?php }?>    
       </tbody>
     </table>
 </div>

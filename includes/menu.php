@@ -1,6 +1,6 @@
 <nav id="nav">
 		<ul>
-			<li><a href='estoque.php'>Estoque</a></li>
+			<li><a href='buscaProduto.php'>Buscar produtos</a></li>
 			<li>&nbsp;&nbsp;|</li>
 			<li><a href='cadastro.php'>&nbsp;&nbsp;Cadastro Usuários</a></li>
 			<li>&nbsp;&nbsp;|</li>

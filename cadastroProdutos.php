@@ -4,30 +4,30 @@ include_once "./includes/connection.php";
 
 session_start();
 
+$_SESSION["Msg"] = "";	
+
 if (! $_SESSION["Apelido"]) {
     header("location: index.php");
     return;
 }
 
 if (strtoupper($_SESSION["Apelido"]) != "ADMIN") {
-    header("location: carrinho.php");
+    header("location: comprar.php");
 }
 
-/*if ($_REQUEST["BtnSubmit"] == 'Editar') {
-    
-    $sql = "UPDATE Produtos SET ";
-    $sql .= "NmProduto ='" . $_REQUEST["NmProduto"] . "',";
-    $sql .= "VlrProduto ='" . $_REQUEST["VlrProduto"] . "',";
-    $sql .= "DscProduto ='" . $_REQUEST["DscProduto"] . "',";
-    $sql .= "QtdProduto ='" . $_REQUEST["QtdProduto"] . "'";    
-    $sql .= " WHERE CodProduto = '" . $_REQUEST["CodProduto"] . "'";
-    
-    $query = mysql_query($sql) or die(mysql_error());
-    
-    $_SESSION["Msg"] = "Produto " . $_REQUEST["NmProduto"] . " editado com sucesso";
-}*/
+$Action = "addProduto";
 
-$valueBtnSubmit = "Cadastrar";
+if ($_REQUEST["acao"] == 'editar') {
+    
+	$sql = "SELECT * FROM Produtos";
+    $sql .= " WHERE CodProduto = '" . $_REQUEST["CodProduto"] . "'";
+
+    $row = mysql_fetch_assoc(mysql_query($sql)) or die(mysql_error());
+    
+	$Action = "updateProduto";
+}
+
+$valueBtnSubmit = "Salvar";
 
 ?>
 <!doctype html>
@@ -78,6 +78,18 @@ $(function(){
 								
 			  });			
 		});
+		
+		
+		$("#btnLimpar").click(function(){
+			
+			$("#action").val("addProduto");
+			$("#NmProduto").val(""),
+			$("#VlrProduto").val("")
+			$("#DscProduto").val("")
+			$("#QtdProduto").val("")
+			$("#CodProduto").val("")
+		});
+		
 	});
 </script>
 <style>
@@ -102,7 +114,7 @@ select,input[type=text],input[type=email] {
 		<form action="<?php $_SERVER["PHP_SELF"]?>" method="POST" id="formCadastro">
 			<input type="hidden" name="CodProduto" id="CodProduto"
 				value="<?php echo $row["CodProduto"];?>" /> <input type="hidden"
-				name="action" id="action" value="addProduto" />
+				name="action" id="action" value="<?php echo $Action; ?>" />
 			<table id="keywords">
 				<tr align="left">
 					<td nowrap>Nome produto:</td>
@@ -125,7 +137,8 @@ select,input[type=text],input[type=email] {
 				</tr>
 				<tr align="left">
 					<td colspan="2"><input type="button" name="BtnSubmit" id="BtnSubmit"
-						value="<?php echo $valueBtnSubmit?>" /></td>
+						value="<?php echo $valueBtnSubmit?>" />
+					<input type="button" id="btnLimpar" value="Limpar"/></td>	
 				</tr>
 				<tr>
 					<td colspan="2"><?php echo $_SESSION["Msg"]?></td>

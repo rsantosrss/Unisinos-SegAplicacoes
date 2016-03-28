@@ -11,7 +11,7 @@ if(!$_SESSION["Apelido"]){
 }
 
 if(strtoupper($_SESSION["Apelido"]) != "ADMIN"){
-    header("location: carrinho.php");
+    header("location: comprar.php");
 }
 
 $_SESSION["Msg"] = "";

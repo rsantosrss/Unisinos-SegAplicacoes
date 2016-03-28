@@ -8,12 +8,14 @@ try{
     session_start();
     
     if(!$_SESSION["Apelido"]){
+		
+		echo "<script>alert('Acesso somente para administradores.');</script>";
         header("location: index.php");
         return;
     }
     
     if(strtoupper($_SESSION["Apelido"]) != "ADMIN"){
-        header("location: carrinho.php");
+        header("location: comprar.php");
     }
     if ($_REQUEST["acao"] == "excluir") {
     

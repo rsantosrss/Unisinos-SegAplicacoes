@@ -5,7 +5,7 @@ CREATE TABLE Produtos (
 	CodProduto 	INT(5) 			NOT NULL 	AUTO_INCREMENT,
 	NmProduto  	VARCHAR(50) 	NOT NULL,
 	DscProduto  VARCHAR(255) 	NOT NULL,
-	VlrProduto  DOUBLE 			NOT NULL,
+	VlrProduto  DECIMAL(5,2)	NOT NULL,
 	QtdProduto 	INT(5) 			NOT NULL,
 	PRIMARY KEY (CodProduto)
 );
@@ -25,18 +25,19 @@ CREATE TABLE Usuarios(
 );
 
 CREATE TABLE Carrinho(
-	CodCarrinho	INT(5)		NOT NULL	AUTO_INCREMENT,
-	IdSessao	INT(5)		NOT NULL,
-	CodUsuario	INT(5)		NOT NULL,	
+	CodCarrinho	INT(5)			NOT NULL	AUTO_INCREMENT,
+	IdSessao	VARCHAR(30)		NOT NULL,
+	CodUsuario	INT(5)			NOT NULL,	
 	DtPedido	DATE			NOT NULL,
+	CompraFinalizada CHAR(1)	NULL,
 	PRIMARY KEY(CodCarrinho),
 	FOREIGN KEY (CodUsuario) REFERENCES Usuarios(CodUsuario)	
 );
 
 CREATE TABLE ItensCarrinho(
-	CodCarrinho	INT(5)		NOT NULL,
-	CodProduto	INT(5)		NOT NULL,
-	QtdProdutos	INT(5)		NOT NULL,
+	CodCarrinho	INT(5)			NOT NULL,
+	CodProduto	INT(5)			NOT NULL,
+	QtdProdutos	INT(5)			NOT NULL,
 	FOREIGN KEY (CodCarrinho)REFERENCES Carrinho(CodCarrinho),
 	FOREIGN KEY (CodProduto) REFERENCES Produtos(CodProduto)
 );

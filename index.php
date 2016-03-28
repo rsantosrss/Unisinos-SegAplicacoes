@@ -34,11 +34,11 @@ try{
             $_SESSION["CodUsuario"] = $row["CodUsuario"];
             $_SESSION["NmUsuario"] = $row["NmUsuario"];
             $_SESSION["Apelido"] = strtoupper($apelido);
-            $_SESSION["IdSessao"] = rand(0, 200);
+            $_SESSION["IdSessao"] = $row["CodUsuario"] .rand(0, 200).strtoupper($apelido);
             
             mysql_close();
             // Redirecionara para a página do carrinho.
-            header("location: carrinho.php");
+            header("location: comprar.php");
             return true;
         }
         else{
