@@ -51,12 +51,12 @@ try{
 			}).done(function( vlrRetorno ) {
 				
 				if(vlrRetorno){
-					alert(vlrRetorno);
+					alert("Compra finalizada com sucesso. Em breve estaremos entrando em contato.");
 					
 					window.location.href = 'comprar.php';
 					
 				}else{
-					alert(vlrRetorno);
+					alert("Compra cancelada com sucesso.");
 				}			
 								
 			  });	
@@ -83,7 +83,13 @@ try{
         </tr>
       </thead>
       <tbody>
-        <?php while($row = mysql_fetch_assoc($query)){?>
+        <?php 
+		
+		if(!mysql_num_rows($query)){
+			echo "<tr><td colspan='4'>Nenhum item adicionado ao carrinho...</td></tr>";
+		}
+		
+		while($row = mysql_fetch_assoc($query)){?>
         
 			<tr align="center" class="lalign hover">
 			  <td><?php echo $row["NmProduto"]?></td>

@@ -13,5 +13,7 @@
 			<li><a href='editarProdutos.php'>&nbsp;&nbsp;Gerenciar Produtos</a></li>
 			<li>&nbsp;&nbsp;|</li>
 			<li><a href='carrinho.php'>&nbsp;&nbsp;Meu Carrinho</a></li>
+			<li>&nbsp;&nbsp;|</li>
+			<li><a href='index.php'>&nbsp;&nbsp;Sair</a></li>
 		</ul>
 	</nav>

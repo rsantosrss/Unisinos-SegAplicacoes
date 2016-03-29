@@ -10,7 +10,7 @@ switch($_REQUEST["acao"]){
 		$sql = "INSERT INTO Produtos (NmProduto, VlrProduto, QtdProduto, DscProduto)";
 		$sql .= " VALUES(";
 		$sql .= "'" . $_REQUEST["NmProduto"] . "',";
-		$sql .= "'" . $_REQUEST["VlrProduto"] . "',";
+		$sql .= "'" . str_replace(",",".",$_REQUEST["VlrProduto"]) . "',";
 		$sql .= "'" . $_REQUEST["QtdProduto"] . "',";
 		$sql .= "'" . $_REQUEST["DscProduto"] . "'";
 		$sql .= ")";
@@ -29,7 +29,7 @@ switch($_REQUEST["acao"]){
 	
 		$sql = "UPDATE Produtos SET ";
 		$sql .= "NmProduto ='" . $_REQUEST["NmProduto"] . "',";
-		$sql .= "VlrProduto ='" . $_REQUEST["VlrProduto"] . "',";
+		$sql .= "VlrProduto ='" . str_replace(",",".",$_REQUEST["VlrProduto"]) . "',";
 		$sql .= "DscProduto ='" . $_REQUEST["DscProduto"] . "',";
 		$sql .= "QtdProduto ='" . $_REQUEST["QtdProduto"] . "'";    
 		$sql .= " WHERE CodProduto = '" . $_REQUEST["CodProduto"] . "'";
@@ -89,7 +89,7 @@ switch($_REQUEST["acao"]){
 				$string .="</tr>";
 				$string .="<tr align='left'>";
 				$string .="	<td nowrap>Valor:</td>";
-				$string .="	<td><input type='text' name='VlrProduto'readonly id='VlrProduto' maxlength='14' value='".$row["VlrProduto"]."'/></td>";
+				$string .="	<td><input type='text' name='VlrProduto'readonly id='VlrProduto' maxlength='14' value='R$ ".$row["VlrProduto"]."'/></td>";
 				$string .="</tr>";
 				$string .="<tr align='left'>";
 				$string .="	<td nowrap>Quantidade:</td>";
@@ -184,6 +184,24 @@ switch($_REQUEST["acao"]){
 	break;
 	
 	case "finalizaCompra":
+	
+	
+		$sql  = "SELECT ItensCarrinho.CodProduto,ItensCarrinho.QtdProdutos FROM ItensCarrinho";
+		$sql .= " INNER JOIN Carrinho ON(ItensCarrinho.CodCarrinho = Carrinho.CodCarrinho)";
+		$sql .= " WHERE Carrinho.IdSessao = '" . $_SESSION["IdSessao"] . "'";
+		$sql .= " AND CompraFinalizada IS NULL";
+	
+		$query = mysql_query($sql)or die(mysql_error());
+	
+		while($row = mysql_fetch_assoc($query)){
+			
+			$sql = "UPDATE Produtos SET ";
+			$sql .= " QtdProduto = QtdProduto - " . $row["QtdProdutos"];
+			$sql .= " WHERE CodProduto = " . $row["CodProduto"];
+			
+			$query2 = mysql_query($sql)or die(mysql_error());
+			
+		}
 	
 		$sql = "UPDATE Carrinho SET CompraFinalizada = 'S'";
 		$sql .= " WHERE IdSessao = '" . $_SESSION["IdSessao"] . "' AND CodUsuario = " . $_SESSION["CodUsuario"];

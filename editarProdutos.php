@@ -67,11 +67,19 @@ try{
       </thead>
       <tbody>
       
-      <?php while($row = mysql_fetch_assoc($query)){?>
+      <?php while($row = mysql_fetch_assoc($query)){
+			
+			$style = "";
+			
+			if($row["QtdProduto"] <=0){
+				$style = "style='border:1px dashed red;'";
+			}
+		
+		?>
         
-        <tr align="center" class="lalign hover">
+        <tr align="center" class="lalign hover" <?php echo $style; ?>>
           <td><?php echo $row["NmProduto"]?></td>
-          <td><?php echo $row["VlrProduto"]?></td>
+          <td>R$ <?php echo $row["VlrProduto"]?></td>
           <td><?php echo $row["QtdProduto"]?></td>
           <td><?php echo $row["DscProduto"]?></td>
           <td>

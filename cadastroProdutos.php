@@ -43,7 +43,34 @@ $valueBtnSubmit = "Salvar";
 $(function(){
 	  $('#keywords').tablesorter(); 
 	});
-	
+	$(function(){
+			$('.qtdProduto').bind('keydown',soNums); // o "#input" é o input que vc quer aplicar a funcionalidade
+		});
+		 
+		function soNums(e){
+		 
+			//teclas adicionais permitidas (tab,delete,backspace,setas direita e esquerda)
+			keyCodesPermitidos = new Array(8,9,37,39,46);
+			 
+			//numeros e 0 a 9 do teclado alfanumerico
+			for(x=48;x<=57;x++){
+				keyCodesPermitidos.push(x);
+			}
+			 
+			//numeros e 0 a 9 do teclado numerico
+			for(x=96;x<=105;x++){
+				keyCodesPermitidos.push(x);
+			}
+			 
+			//Pega a tecla digitada
+			keyCode = e.which; 
+			 
+			//Verifica se a tecla digitada é permitida
+			if ($.inArray(keyCode,keyCodesPermitidos) != -1){
+				return true;
+			}    
+			return false;
+		}
 	
 	$(document).ready(function(){
 		
@@ -124,12 +151,12 @@ select,input[type=text],input[type=email] {
 				<tr align="left">
 					<td nowrap>Valor:</td>
 					<td><input type="text" name="VlrProduto" id="VlrProduto" maxlength="14"
-						required="required" value="<?php echo $row["VlrProduto"];?>" /></td>
+						required="required" value="<?php echo $row["VlrProduto"];?>"  /></td>
 				</tr>
 				<tr align="left">
 					<td nowrap>Quantidade:</td>
 					<td><input type="text" name="QtdProduto" id="QtdProduto"
-						value="<?php echo $row["QtdProduto"];?>" /></td>
+						value="<?php echo $row["QtdProduto"];?>" class='qtdProduto'/></td>
 				</tr>
 				<tr align="left">
 					<td nowrap>Descrição:</td>

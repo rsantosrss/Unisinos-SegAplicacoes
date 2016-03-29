@@ -49,6 +49,12 @@ select,input[type=text],input[type=email] {
 	$(document).ready(function(){
 		
 		$("#BtnPesquisar").on("click", function(){
+			
+			if(!$("#NmProduto").val() && !$("#DscProduto").val()){
+				alert("Você deve pesquisar por nome ou descrição");
+				return false;
+			}
+			
 			$.ajax({
 				method: "POST",
 				url: "function.php",

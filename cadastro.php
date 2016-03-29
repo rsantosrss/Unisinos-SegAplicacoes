@@ -105,7 +105,7 @@ $(function(){
 	});
 </script>
 <style>
-select,input[type=text],input[type=email] {
+select,input[type=text],input[type=email],input[type=password]  {
 	width: 250px;
 	text-align: left;
 }
@@ -173,7 +173,7 @@ select,input[type=text],input[type=email] {
 				</tr>
 				<tr align="left">
 					<td>Senha:</td>
-					<td><input type="text" name="Senha" id="Senha" required="required"
+					<td><input type="password" name="Senha" id="Senha" required="required"
 						value="<?php echo $row["Senha"];?>" /></td>
 				</tr>
 				<tr align="left">

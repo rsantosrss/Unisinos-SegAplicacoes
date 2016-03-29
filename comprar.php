@@ -50,7 +50,7 @@ try{
 	
 	
 	$(function(){
-			$('#qtdProduto').bind('keydown',soNums); // o "#input" é o input que vc quer aplicar a funcionalidade
+			$('.qtdProduto').bind('keydown',soNums); // o "#input" é o input que vc quer aplicar a funcionalidade
 		});
 		 
 		function soNums(e){
@@ -120,15 +120,29 @@ try{
         </tr>
       </thead>
       <tbody>
-         <?php while($row = mysql_fetch_assoc($query)){?>
+         <?php while($row = mysql_fetch_assoc($query)){
+			 
+			$readOnly = "";
+			$texto = "";
+			
+			$qtdProduto = $row["QtdProduto"];
+			
+			if($row["QtdProduto"] <=0){
+				$readOnly = "readonly";
+				$texto = "Produto indisponível";				
+				$qtdProduto = 0;
+			}
+			?>
         
         <tr align="center" class="lalign hover">
           <td class="NmProduto"><?php echo $row["NmProduto"]?></td>
           <td>R$ <?php echo $row["VlrProduto"]?></td>
-          <td><?php echo $row["QtdProduto"]?> un.</td>
+          <td><?php echo $qtdProduto?> un.</td>
           <td><?php echo $row["DscProduto"]?></td>
-          <td><input type="text" id="qtdProduto" name="qtdProduto[<?php echo $row['CodProduto']?>]" size="1"; value="<?php echo $arrProdutos[$row['CodProduto']]?>"/></td>
-          <td>&nbsp;</td>
+          <td><input type="text" id="qtdProduto" class='qtdProduto' name="qtdProduto[<?php echo $row['CodProduto']?>]"  <?php echo $readOnly;?>
+		  size="1"; value="<?php echo $arrProdutos[$row['CodProduto']]?>"/></td>
+		  
+          <td>&nbsp; <?php echo $texto; ?></td>
         </tr>  
         <?php }?>
       </tbody>
